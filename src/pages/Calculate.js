@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Button, Col, Divider, Form, Input, Row, Space, Table} from 'antd';
-import InputNumber from "../components/input/InputNumber";
 import {Typography} from 'antd';
+import TableInit from "../components/table/TableInit";
 
 const {Text, Title} = Typography;
 
@@ -16,11 +16,8 @@ const Calculate = () => {
     const onFinish = (values) => {
         values["id"] = id
         data.push(values)
-        console.log('Success:', values);
-        console.log('Success:', data);
-        console.log('Success:', beli);
-        console.log('Success:', jual);
         setId(id + 1);
+        console.log(data)
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -79,10 +76,68 @@ const Calculate = () => {
         if (data.length > 0) calculateReturn();
     }, [data, beli, jual]);
 
+    const dataInit = data
+
     return (
         <>
             <div>
                 <Space direction="vertical" style={{width: "100%"}}>
+                    <Title level={5}>Data Permintaan dan Probabilitas</Title>
+                        <Row type="flex" justify="center">
+                            <Col span={12}>
+                                <Form
+                                    name="basic"
+                                    labelCol={{
+                                        span: 4,
+                                    }}
+                                    wrapperCol={{
+                                        span: 12,
+                                    }}
+                                    initialValues={{
+                                        remember: true,
+                                    }}
+                                    layout="vertical"
+                                    onFinish={onFinish}
+                                    onFinishFailed={onFinishFailed}
+                                    autoComplete="off"
+                                >
+                                    <Form.Item
+                                        label="Permintaan"
+                                        name="permintaan"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Masukkan permintaan!',
+                                            },
+                                        ]}
+                                    >
+                                        <Input/>
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        label="Probabilitas"
+                                        name="probabilitas"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Masukkan probabilitas!',
+                                            },
+                                        ]}
+                                    >
+                                        <Input/>
+                                    </Form.Item>
+
+                                    <Form.Item
+                                    >
+                                        <Button type="primary" htmlType="submit">Tambah Data</Button>
+                                    </Form.Item>
+                                </Form>
+                            </Col>
+                            <Col span={12}>
+                                <TableInit dataSource={[...dataInit]} />
+                            </Col>
+                        </Row>
+                    <Divider/>
                     <Space direction="vertical">
                         <Text>Harga Beli</Text>
                         <Input type="number" onChange={(e) => setBeli(e.target.value)}/>
@@ -90,77 +145,8 @@ const Calculate = () => {
                         <Input type="number" onChange={(e) => setJual(e.target.value)}/>
                     </Space>
                     <Divider/>
-                    <Form
-                        name="basic"
-                        labelCol={{
-                            span: 4,
-                        }}
-                        wrapperCol={{
-                            span: 12,
-                        }}
-                        initialValues={{
-                            remember: true,
-                        }}
-                        layout="vertical"
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                    >
-                        <Form.Item
-                            label="Permintaan"
-                            name="permintaan"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Masukkan permintaan!',
-                                },
-                            ]}
-                        >
-                            <Input/>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Probabilitas"
-                            name="probabilitas"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Masukkan probabilitas!',
-                                },
-                            ]}
-                        >
-                            <Input/>
-                        </Form.Item>
-
-                        <Form.Item
-                        >
-                            {/*<ButtonPrimary text="Tambah Data" width="173" height="52" fontSize="14"/>*/}
-                            <Button type="primary" htmlType="submit">Tambah Data</Button>
-                        </Form.Item>
-                    </Form>
-                    <Divider/>
-                    <Title level={5}>Data Permintaan dan Probabilitas</Title>
-                    <Row>
-                        <Col span={1}>No</Col>
-                        <Col span={5}>Permintaan</Col>
-                        <Col span={5}>Probabilitas</Col>
-                    </Row>
-                    {
-                        data && data.map((e, index) => {
-                            return (
-                                <>
-                                    <Row>
-                                        <Col span={1}>{e.id}</Col>
-                                        <Col span={5}>{e.permintaan}</Col>
-                                        <Col span={5}>{e.probabilitas}</Col>
-                                    </Row>
-                                </>
-                            )
-                        })
-                    }
-                    <Divider/>
                     <Title level={5}>Tabel Pay Off</Title>
-                    <Row>
+                    <Row style={{borderBottom: "1px solid black"}}>
                         <Col span={3}>Probabilitas</Col>
                         <Col span={15}>
                             Jumlah Permintaan dan Probabilitas
@@ -194,7 +180,7 @@ const Calculate = () => {
                     ))}
                     <Divider/>
                     <Title level={5}>Tabel Expected Pay Off</Title>
-                    <Row>
+                    <Row style={{borderBottom: "1px solid black"}}>
                         <Col span={3}>Expected Result</Col>
                         <Col span={15}>Probabilitas</Col>
                         <Col>ER</Col>

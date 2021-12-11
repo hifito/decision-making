@@ -1,19 +1,12 @@
-import Container from "../container/Container";
 import React from "react";
 import Header from "./Header";
-import Background from "../../assets/image/Background.png"
 
 const Layout = (props) => {
     return (
         <>
-            <div style={{
-                // backgroundImage: `url(${Background})`,
-                // backgroundSize: "cover",
-                // backgroundRepeat: "no-repeat",
-                // backgroundPosition: "center",
-            }}>
+            <div style={{}}>
                 <Header/>
-                <div style={{margin: 100}}>
+                <div style={{margin: "50px 100px 100px 100px"}}>
                     {props.content}
                 </div>
             </div>
